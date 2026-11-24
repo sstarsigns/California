@@ -48,9 +48,10 @@ export default {
                 const canEmbed = permissions.has(PermissionFlagsBits.EmbedLinks);
 
                 if (!canEmbed) {
-                    await channel.send({
-                        content: messageContent || welcomeMessage
-                    });
+                    const sent = await channel.send({
+    content: messageContent || welcomeMessage
+});
+deleteAfter(sent, 30);
                 } else {
                     const embed = new EmbedBuilder()
                         .setColor(welcomeConfig.welcomeEmbed?.color || getColor('success'))
@@ -69,11 +70,11 @@ export default {
                     } else if (welcomeConfig.welcomeEmbed?.image?.url) {
                         embed.setImage(welcomeConfig.welcomeEmbed.image.url);
                     }
-                    
-                    await channel.send({ 
-                        content: messageContent,
-                        embeds: [embed] 
-                    });
+                   const sent = await channel.send({ 
+    content: messageContent,
+    embeds: [embed] 
+});
+deleteAfter(sent, 30);
                 }
             }
         }
@@ -194,5 +195,13 @@ async function assignRoleSafely(member, role) {
         await member.roles.add(role);
     } catch (error) {
         logger.warn(`Failed to assign role ${role.id} to member ${member.id}:`, error);
+    }
+}
+function deleteAfter(message, seconds) {
+    const timeout = setTimeout(() => {
+        message.delete().catch(() => {});
+    }, seconds * 1000);
+    if (typeof timeout.unref === 'function') {
+        timeout.unref();
     }
 }
