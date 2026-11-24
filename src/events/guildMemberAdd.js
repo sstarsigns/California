@@ -59,7 +59,7 @@ deleteAfter(sent, 30);
                         .setDescription(welcomeMessage)
                         .setThumbnail(user.displayAvatarURL())
                         .addFields(
-                            { name: 'User', value: `${user.tag} (${user.id})`, inline: true },
+                            { name: 'User', value: `${user.tag}`, inline: true },
                             { name: 'Member Count', value: guild.memberCount.toString(), inline: true }
                         )
                         .setTimestamp()
